@@ -4,20 +4,36 @@
 - LEARNING SITECORE:
     - Sitecore Helix. A set of overall design principles and conventions for Sitecore development.
     - Sitecore. CMS. Content and presentation.
+    - Base Sitecore installation with a working Web page built using Helix architecture.
+        - Web pages: Built beginning with layout. The layout defines the overall structure of the page.
+        - Inside of the layout, there are multiple renderings. The rendering are created seperately, so that they can be reused.
+            - Rendering are placed within a layout using a placeholder.
+            - The rendering content structure is set up using data templates. Each field has its own type.
+                - And then Sitecore generates the correct HTML output for each data type.
+        - Layouts, Renderings, and Data Templates need to be built using the recommended architecture and practicles.
+        - Data templates will act as a model which will be bound to renderings to display the values from the fields in Sitecore.
 
 - CONFIGURING A DEVELOPMENT ENVIRONMENT FOR SITECORE:
     - Installing SQL Server: Install 'new, stand-alone version.' Install 'Database Engine Services' and 'Analysis Services.'
         - Choose 'Mixed Mode.' Add current user as an admin. Reboot. Install SSMS. Restart.
     - Installing Docker: Docker helps to simplify the development workflow by using a containerized approach.
-        - Windows 10? Install Docker Desktop. BIOS Virtualization turned on. Docker Desktop installation. WSL 2 enabled. Close and restart.
-        - Switch to Windows containers. (Default is Linux.) Edit settings. Modify configuration:
+        - Windows 10? Install Docker Desktop. 
+        - Docker Desktop installation. Configuration:
+            1. Enable Hyper-V Windows Features
+            2. Install required Windows components for WSL 2
+        - Within system tray for Docker, ensure "Switch to Windows containers." 
+        - Modify settings - Docker Engine:
             ```javascript
                 "dns": ["8.8.8.8"]
             ```
+        - This points to Google's public DNS, which will assure that DNS lookups do not fail within Docker images.
+        - Do not instal the Linux kernel. BIOS Virtualization turned on.  Close and restart.
+        - Switch to Windows containers. (Default is Linux.) Edit settings. Modify configuration:
         - Ensure DNS lookups will not fail. Command prompt:
             ```javascript
                 docker version
             ```
+        - Ensure that Windows is set for both Docker client and Docker server.
 
 - INSTALLING SITECORE:
     - [Sitecore developer portal](https://dev.sitecore.net/)
@@ -37,19 +53,25 @@
             Set-ExecutionPolicy Unrestricted
         ```
         - Install for: Customized single-server installations. Multi-server. (CM. CD. SQL. SOLR.)
-        - Inspect via IIS. Identity Server. Public site. Content management and presentation. XConnect. Service layer for XDB databases.
+        - Inspect via IIS. Identity Server. Public site. Content management and presentation.
+        - XConnect. Service layer for XDB databases. Set of SQL Server DBs.
         - Inspect via folder structure. wwwwroot. Site name. 
-            - Logs: App_Data\logs. "log" general log information.
+            - Logs: App_Data\logs. "log" general log information. Bamed via function. General = Log.
             - Connection strings: App_Config\ConnectionStrings.log
             - SQL:
                 - core: Sitecore interface settings. e.g.: Custom menu options.
                 - security: Identity server for authentication.
                 - master: All content. Both published and unpublished. Work in progress.
-                - web: The live site.
+                - web: The live site. Only published content.
             - SOLR:
-                - Dashboard. Search and indexing provider. Cores: Master and Web. Search indexes for all content. One folder per core.
+                - Dashboard. Search and indexing provider. Cores: Master and Web.
+                - Search indexes for all content. One folder per core.
+        - MAKE A BACKUP OF THE WEB ROOT AFTER INNITIAL INSTALL.
         - Docker: Ensure the following ports are not being used: 443, 8079, 8081, 8984, 14330.
             - Stop IIS. [GitHub Docker Examples](https://github.com/sitecore/docker-examples)
+            ```javascript
+                iisreset /stop
+            ```
             - INIT script. Download all required images. Create a default network and a container for each configured service.
             ```javascript
                 docker-compose up -d
@@ -57,7 +79,7 @@
                 docker-compose logs -f --tail 20
             ```
             - xp0id.localhost/sitecore. Incognito mode. SSMS connection: localhost,14330
-            - Ensure Docker Desktop is running in Wiondows container mode.
+            - Ensure Docker Desktop is running in Windows container mode.
 
 - SETTING UP A SITECORE MVC VISUAL STUDIO PROJECT USING HELIX:
     - Create folder structure outside of the Web root. New project: ASP.NET Web Application (.NET Framework)
