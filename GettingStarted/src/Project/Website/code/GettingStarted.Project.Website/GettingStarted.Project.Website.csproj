@@ -216,6 +216,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\Debug.pubxml" />
+    <Content Include="Views\Layouts\Website\Default.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
