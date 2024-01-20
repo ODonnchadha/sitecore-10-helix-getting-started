@@ -124,15 +124,29 @@
             - Select "Layout Folder." Name "Website." Within folder "Website," click "Layout."
                 - Name it "Default" and path to our file.
         - Experience editor "Proview" mode. For quick debugging.
-        - Page Type Template: CombinespPresentation and content.
-            - Layout: Presentation.
-            - Template standard values: Default values.
-    - Publishing a Sitecore Website:
+        - Page Type Template: Combines presentation with the content structure.
+            - Create a page type for every variation on the Website. 
+                - e.g.: Home page. Content detail page.
+                    - May use the sme layout with different components or renderings.
+                    - Two seperate page types in Sitecore.
+            - A Layout is required to set the presentation. A layout is the frame of a house.
+            - Template standard values set the default values for any item in Sitecore that uses that template.
+    - Publishing a Sitecore Website: From master database to web database.
         - Smart Publish. Difference between source and target. Republish. Incremental Publish.
-    - Working qwith Template Inheritance:
-        - "Body copy view rendering." Title. Body copy. Via a data template.
+
+    - Working with Template Inheritance:
+        - "Body copy view rendering." Title. Body copy. Via a data template. Editable content.
             - Body Copy ()=> Body Copy Content. Title => Single-Line Text. Body Copy => Rich Text.
             - Template inheritance. Same fields. Always inherit from which that is defined.
+            - Within Builder, create a new field section "Body Copy Content." Used to group similiar fields.
+            - Body Copy Content:
+                - Title: Single-Line Text
+                - Body Copy: Rich Text
+                - NOTE: We are using spaces within the names of the templates, field groups, and fields.
+                - Why? User we see these names while editing content. Easy to read and understand.
+                - PageType templates should never include fields of their own. 
+                    - They should always inherit from multiple data templates.
+                    - Define in *one* template and then inherit.
     - Developing the body copy view rendering:
         ```javascript
             @model Sitecore.Mvc.Presentation.RenderingModel
@@ -148,8 +162,17 @@
         - With 'main' as "Add to body" within renderings/controls. You can publish from the experience editor.
         - View rendering: @model Sitecore.Mvc.Presentation.RenderingModel
         - Placeholder: @Html.Sitecore().Placeholder("x")
-        - Data Template: COntent Definition.
+        - Data Template: Content Definition.
         - Fields: @Html.Sitecore().Field("y")
+        - NOTES:
+        - A view rendering in Sitecore uses the rendering model to bind content to presentation.
+        - Sitecore rendering model enables us to obtain the values of the fields, the content item, that are currently loaded on the page.
+        - Add a placeholder to the default layout. This tells Sitecore where to render the HTML for a rendering.
+        - And then add the body copy rendering to the default page type we told Sitecore to add it to the "main" placeholder.
+        - The data template is where we defined the content to support the presentation in the view rendering.
+        - Data fields are added to the data template depending on the needs of the rendering. e.g.: title. body copy.
+        - Field types allow to define a field's purpose.
+        - Group fields and templates that pertain to the same business logic. Then use template inheritance.
     - Creating a Global Datasource:
         - Hero Image template. With field sections. Hero Image and Hero Logo. All with the backing type of 'Image.'
             - Keep global outside of any home.
